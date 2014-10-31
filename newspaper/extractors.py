@@ -438,7 +438,13 @@ class ContentExtractor(object):
         """
         page_urls = self.get_urls(doc)
         valid_categories = []
+        root_scheme = urls.get_scheme(source_url, allow_fragments=False)
+        root_domain = urls.get_domain(source_url, allow_fragments=False)
+        root_url = root_scheme + '://' + root_domain
+
         for p_url in page_urls:
+            if p_url.startswith(root_url):
+                p_url = p_url[len(root_url):]
             scheme = urls.get_scheme(p_url, allow_fragments=False)
             domain = urls.get_domain(p_url, allow_fragments=False)
             path = urls.get_path(p_url, allow_fragments=False)
